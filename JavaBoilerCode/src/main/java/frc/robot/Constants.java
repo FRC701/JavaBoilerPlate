@@ -18,6 +18,12 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static final class Intake{
+
+  public static final int IntakeMotor = 3;
+  }
+
 public static final class Arm {
   
   public static final int ArmMotor1 = 1;

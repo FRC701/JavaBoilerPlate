@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ChangeArmPosition;
+import frc.robot.commands.EjectObject;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -34,10 +35,13 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
 
+
     SmartDashboard.putData("pos1", new ChangeArmPosition(Constants.Arm.ArmProfilingState1));
+    SmartDashboard.putData("Eject", new EjectObject());
     configureBindings();
 
     m_driverController.b().toggleOnTrue(new ChangeArmPosition(Constants.Arm.ArmProfilingState1));
+    m_driverController.y().toggleOnTrue(new EjectObject());
   }
 
   /**
