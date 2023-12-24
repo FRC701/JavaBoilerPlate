@@ -15,13 +15,14 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   TalonFX IntakeMotor;
 
+  public enum ObjectState {
+    S_WaitingforBall, S_HasBall
+  };
+  
   public Intake() {
     IntakeMotor = new TalonFX(Constants.Intake.IntakeMotor);
   }
 
-  public enum ObjectState {
-    S_WaitingforBall, S_HasBall
-  };
 
   public String HasObjectState(ObjectState State) {
     String CurrentState = "none";
@@ -59,12 +60,22 @@ public class Intake extends SubsystemBase {
     return false;
   }
 
-  public boolean ThresholdOutMet() {
-    return true;
+  public boolean ThresholdInMet() {
+    if (IntakeMotor.getStatorCurrent() >= 50) {
+      return true;
+    }
+    return false;
   }
 
-  public boolean ThresholdInMet() {
-    return true;
+  public boolean ThresholdOutMet() {
+    boolean isOuttaking = false;
+    if (IntakeMotor.getSelectedSensorVelocity() <= 0)
+    {isOuttaking = true;}
+    if (isOuttaking && IntakeMotor.getSelectedSensorVelocity() >= 0)
+    {
+      return true;
+    }
+    return false;
   }
 
   public void SpinIntake(double MotorSpeed) {
