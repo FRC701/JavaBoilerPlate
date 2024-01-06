@@ -5,12 +5,19 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ArmStateFirstPosition;
+import frc.robot.commands.ArmStateSecondPosition;
+import frc.robot.commands.ArmStateThirdPosition;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ChangeArmPosition;
+import frc.robot.commands.EjectObject;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,8 +26,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private final ArmSubsystem mArm = new ArmSubsystem();
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  //private final ArmSubsystem mArmSub = new ArmSubsystem(); Defined subsystem
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -29,7 +38,15 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+    SmartDashboard.putData("pos1", new ArmStateFirstPosition(mArm));
+    SmartDashboard.putData("pos2", new ArmStateSecondPosition(mArm));
+    SmartDashboard.putData("pos3", new ArmStateThirdPosition(mArm));
+
     configureBindings();
+/* 
+    m_driverController.b().onTrue(new ArmStateThirdPosition());
+    m_driverController.y().onTrue(new ArmStateSecondPosition());
+    m_driverController.a().onTrue(new ArmStateFirstPosition());*/
   }
 
   /**
