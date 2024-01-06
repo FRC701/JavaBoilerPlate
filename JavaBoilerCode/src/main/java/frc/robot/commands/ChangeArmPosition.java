@@ -17,7 +17,7 @@ public class ChangeArmPosition extends CommandBase {
 
   private TrapezoidProfile.State ArmProfilingState;
 
-  public ChangeArmPosition(TrapezoidProfile.State ArmProfilingState) {
+  public ChangeArmPosition(TrapezoidProfile.State ArmProfilingState,  ArmSubsystem mArm) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(mArm);
   }

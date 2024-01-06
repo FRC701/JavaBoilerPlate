@@ -12,7 +12,7 @@ public class EjectObject extends CommandBase {
   private Intake mIntake;
   private Timer mTimer;
   /** Creates a new EjectObject. */
-  public EjectObject() {
+  public EjectObject(Intake mIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(mIntake);
   }

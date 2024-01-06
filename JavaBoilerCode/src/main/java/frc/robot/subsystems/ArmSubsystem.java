@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -19,8 +20,11 @@ public class ArmSubsystem extends SubsystemBase {
   public TalonFX ArmFollower;
   public PIDController pidControl;
   public SimpleMotorFeedforward feedforwardControl;
+
+  public ArmState mState;
   public ArmSubsystem() {
 
+    mState = ArmState.pos1;
     ArmMaster = new TalonFX(Constants.Arm.ArmMotor1);
     ArmFollower = new TalonFX(Constants.Arm.ArmMotor2);
     pidControl = new PIDController(Constants.Arm.kP, Constants.Arm.kI, Constants.Arm.kD);
@@ -38,20 +42,51 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public enum ArmState {
-    pos1, pos2, pos3
+    pos1, pos2, pos3, disable
   }
 
-  public void setState(ArmState state) {
-
-    switch (state) {
-      case pos1: 
+  public String runState() {
+    String currentState;
+    switch (mState) {
+      case pos1:
+      SetPercentOutput(0.1);
+      currentState = "Position 1"; 
         break;
       case pos2:
+      SetPercentOutput(0.2);
+      currentState = "Position 2";
         break;
       case pos3:
+      SetPercentOutput(0.3);
+      currentState = "Position 3";
         break;
+      case disable:
+      SetPercentOutput(0.0);
+      currentState = "disable";
+        break;
+      default:
+      currentState = "null";
     }
+    return currentState;
   }
+
+  public void setPosition1(){
+
+    mState = ArmState.pos1;
+  }
+
+  public void setPosition2(){
+    mState = ArmState.pos2;
+  }
+
+  public void setPosition3(){
+    mState = ArmState.pos3;
+  }
+
+  public void disableArmState(){
+    mState = ArmState.disable;
+  }
+
 
 public double SetPercentOutput(double AppliedOutput) {
   ArmMaster.set(ControlMode.PercentOutput, AppliedOutput);
@@ -73,6 +108,8 @@ public boolean AtSetpoint(double setPoint, double tolerance){
 
   @Override
   public void periodic() {
+
+    SmartDashboard.putString("Current State =", runState());
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Angle", ArmMaster.getSelectedSensorPosition());
     SmartDashboard.putNumber("Speed", ArmMaster.getSelectedSensorVelocity());
